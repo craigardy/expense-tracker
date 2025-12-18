@@ -5,4 +5,5 @@ export const images = {
   lightHighlight: require('../images/circle-solid-full-light.png'),
   logo: require('../images/money-check-dollar-solid-full.png'),
   appLogo: require('../images/app-logo.png'),
+  chevronRight: require('../images/chevron-right-solid-full.png'),
 }

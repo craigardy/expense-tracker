@@ -8,22 +8,59 @@ and tap on an expense to see more details or edit it. */
  is displayed on that very same screen. */
 // import { format } from 'date-fns';
 import { format } from 'date-fns';
-import React, { useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { FlatList, Image, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import { images } from '../../assets/constants/images';
-import { Item } from '../../components/Expense';
+import { Expense } from '../../components/Expense';
+import FormField from '../../components/FormField';
 import { useCategories } from '../../hooks/useCategories';
 import { useExpenses } from '../../hooks/useExpenses';
 
+
 const Expenses = () => {
+  const router = useRouter();
   const { expenses, getUserExpenses, isLoading: isExpenseLoading } = useExpenses();
   const { categories, fetchCategories, isLoading: isCategoryLoading } = useCategories();
+  const [searchQuery, setSearchQuery] = useState('');
 
-  useEffect(() => {
-    fetchCategories();
-    getUserExpenses();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchCategories();
+      getUserExpenses();
+    }, [fetchCategories, getUserExpenses])
+  );
+
+  // Category ID to Name mapping
+  const categoryMap = useMemo(() => {
+  const map: { [key: string]: string } = {};
+  categories.forEach((cat) => {
+    map[cat.$id] = cat.name;
+  });
+  return map;
+  }, [categories]);
+
+  // Format expenses with category names and formatted dates
+  const formattedExpenses = useMemo(() => {
+   return expenses.map(exp => ({
+    ...exp,
+    date: exp.date ? format(new Date(exp.date), 'yyyy-MM-dd') : 'Invalid date',
+    categoryName: categoryMap[exp.category] || 'Unknown',
+  }));
+}, [expenses, categoryMap]);
+
+  // filtering logic
+  const filteredExpenses = useMemo(() => {
+    const searchLower = searchQuery.toLowerCase();
+  return formattedExpenses.filter(expense =>
+      expense.categoryName.toLowerCase().includes(searchLower) ||
+      expense.date.toLowerCase().includes(searchLower) ||
+      expense.amount.toString().includes(searchLower) ||
+      (expense.note ? expense.note.toLowerCase().includes(searchLower) : false)
+    );
+  }, [formattedExpenses, searchQuery]);
 
   if (isExpenseLoading || isCategoryLoading) {
     return (
@@ -33,40 +70,35 @@ const Expenses = () => {
     );
   }
 
-  // Category ID to Name mapping
-  interface Category {
-    $id: string;
-    name: string;
-  }
-  const categoryMap: { [key: string]: string } = {};
-  categories.forEach((cat: Category) => {
-    categoryMap[cat.$id] = cat.name;
-  });
-
-  // Format expenses with category names and formatted dates
-  const formattedExpenses = expenses.map(exp => ({
-    ...exp,
-    date: exp.date ? format(new Date(exp.date), 'yyyy-MM-dd') : 'Invalid date',
-    categoryName: categoryMap[exp.category] || 'Unknown',
-  }));
-
   return (
     <SafeAreaView className="bg-primary h-full">
-      <View className="w-full justify-center items-center min-h-[85vh] px-4">
+      <View className="w-full flex-1 px-4 items-center">
         <Image source={images.appLogo} className="w-[130px] h-[84px]" resizeMode="contain" />
-        <Text className="text-2xl text-white text-semibold mt-10 font-semibold">Expenses</Text>
-        <View className="w-full flex-1 justify-center pb-20">
-          <View className="bg-dark-200 rounded-xl p-6 w-full mt-10 border-2 border-secondary">
+        <Text className="text-2xl text-white text-semibold mt-2 font-semibold">Expenses</Text>
+        {/* Search */}
+        <View className="rounded-xl pt-1 w-full mt-2 border-2">
+            <FormField
+              title="Search Expenses"
+              placeholder="Search by category, date, amount, or note"
+              value={searchQuery}
+              handleChangeText={(e: string) => setSearchQuery(e)}
+              otherStyles="mb-4"
+            />
+          </View>
+          {/* Expenses */}
+        <View className="w-full flex-1 pb-20">
+          <View className="bg-dark-200 rounded-xl p-6 w-full mt-4 border-2 border-secondary flex-1">
             <FlatList
-              data={formattedExpenses}
+              data={filteredExpenses}
+              keyExtractor={(item) => item.$id}
               renderItem={({ item }) => (
-                <Item
+                <Expense
                   category={item.categoryName}
                   date={item.date}
                   amount={item.amount}
+                  onPress={() => router.push(`/expense/${item.$id}`)}
                 />
               )}
-              keyExtractor={(item) => item.$id}
               ListEmptyComponent={() => (
                 <View className="justify-center items-center">
                   <Text className="text-gray-300 text-lg mt-4">No expenses recorded yet.</Text>

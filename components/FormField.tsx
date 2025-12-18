@@ -9,9 +9,10 @@ interface FormFieldProps {
   keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad';
   placeholder?: string;
   editable?: boolean;
+  autoFocus?: boolean;
 }
 
-const FormField = ({ title, value, handleChangeText, otherStyles, keyboardType, placeholder, editable }: FormFieldProps) => {
+const FormField = ({ title, value, handleChangeText, otherStyles, keyboardType, placeholder, editable, autoFocus }: FormFieldProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -26,6 +27,7 @@ const FormField = ({ title, value, handleChangeText, otherStyles, keyboardType, 
           secureTextEntry={title === 'Password' && !showPassword}
           editable={editable !== false}
           keyboardType={keyboardType || 'default'}
+          autoFocus={autoFocus}
         />
         {title === 'Password' && (
           <TouchableOpacity

@@ -3,15 +3,19 @@ It could show a summary of recent expenses, a
 chart of spending for the current month */
 import React from 'react';
 import { Image, ScrollView, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '../../assets/constants/images';
 
 const Home = () => {
   return (
-    <View className="flex-1 bg-primary">
-      <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false} contentContainerStyle={{ minHeight: "100%", paddingBottom: 10 }}>
-        <Image source={images.logo} className="w-12 h-10 mt-20 mb-5 mx-auto" />
+    <SafeAreaView className="bg-primary h-full">
+      <ScrollView>
+        <View className="w-full justify-center items-center min-h-[85vh] px-4">
+          <Image source={images.appLogo} className="w-[130px] h-[84px]" resizeMode="contain" />
+          
+        </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   )
 }
 

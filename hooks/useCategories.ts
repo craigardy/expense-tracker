@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { addCategory, Category, getCategories } from '../services/category';
 
 export const useCategories = () => {
@@ -7,7 +7,7 @@ export const useCategories = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
@@ -18,7 +18,7 @@ export const useCategories = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   const addNewCategory = async (name: string) => {
     setIsLoading(true);
