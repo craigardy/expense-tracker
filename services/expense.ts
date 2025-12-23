@@ -91,7 +91,36 @@ export const getUniqueExpenseDatesByUser = async () => {
     months,
     years,
   };
-}
+};
+
+export const getExpensesByUserAndYear = async (year: number) => {
+  const currentUser = await getCurrentUser();
+  if (!currentUser) throw new Error('No current user found');
+  const response = await tablesDB.listRows({
+    databaseId: DATABASE_ID,
+    tableId: EXPENSES_TABLE_ID,
+    queries: [
+      Query.equal('user', `${currentUser.$id}`),
+      Query.equal('year', year),
+    ]
+  });
+  return response.rows;
+};
+
+export const getExpensesByUserAndMonth = async (year: number, month: number) => {
+  const currentUser = await getCurrentUser();
+  if (!currentUser) throw new Error('No current user found');
+  const response = await tablesDB.listRows({
+    databaseId: DATABASE_ID,
+    tableId: EXPENSES_TABLE_ID,
+    queries: [
+      Query.equal('user', `${currentUser.$id}`),
+      Query.equal('year', year),
+      Query.equal('month', month),
+    ]
+  });
+  return response.rows;
+};
 
 export type UpdateExpenseInput = {
   amount?: number;

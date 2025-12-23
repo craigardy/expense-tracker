@@ -1,0 +1,48 @@
+import React, { useCallback } from 'react';
+import { FlatList, Text, View } from 'react-native';
+import { CategoryData } from '../hooks/useExpenseAnalytics';
+
+type CategoryBreakdownListProps = {
+  categoryData: CategoryData[];
+};
+
+const CategoryBreakdownList: React.FC<CategoryBreakdownListProps> = ({ categoryData }) => {
+  const renderItem = useCallback(({ item }: { item: CategoryData }) => (
+    <View className="mb-4 p-4 bg-dark-100 rounded-lg">
+      <View className="flex-row items-start">
+        <Text
+          className="text-white text-lg font-semibold flex-1 pr-2"
+          numberOfLines={2}>
+          {item.name}
+        </Text>
+        <Text className="text-white text-lg w-24 text-right">
+          ${item.amount.toFixed(2)}
+        </Text>
+        {/* Separator */}
+        <View className="w-px mx-3 bg-white self-stretch" />
+        <Text className="text-white text-lg w-16 text-right">
+          {item.percentage.toFixed(1)}%
+        </Text>
+      </View>
+    </View>
+  ), []);
+
+  return (
+    <View className="w-full flex-1 pb-20">
+      <View className="bg-dark-200 rounded-xl p-6 w-full mt-4 border-2 border-secondary flex-1">
+        <FlatList
+          data={categoryData}
+          keyExtractor={(item) => item.name}
+          renderItem={renderItem}
+          ListEmptyComponent={() => (
+            <View className="justify-center items-center">
+              <Text className="text-gray-300 text-lg mt-4">No expenses by category.</Text>
+            </View>
+          )}
+        />
+      </View>
+    </View>
+  );
+};
+
+export default CategoryBreakdownList;

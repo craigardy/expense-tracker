@@ -3,6 +3,8 @@ import {
   addExpense,
   getExpensesByUser,
   getExpensesByUserAndId,
+  getExpensesByUserAndMonth,
+  getExpensesByUserAndYear,
   getUniqueExpenseDatesByUser,
   updateExpense,
   type UpdateExpenseInput,
@@ -71,6 +73,26 @@ export function useExpenses() {
     }
   }, []);
 
+  const getUserExpensesByDate = useCallback(async (year: number, month?: number) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      if (month !== undefined) {
+        const res = await getExpensesByUserAndMonth(year, month);
+        setExpenses(res);
+      } else {
+        const res = await getExpensesByUserAndYear(year);
+        setExpenses(res);
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to fetch expenses by date');
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+
   // ADDING & UPDATING
   const addNewExpense = async (
     amount: number,
@@ -125,5 +147,6 @@ export function useExpenses() {
     getUniqueUserExpenseDates,
     addNewExpense,
     updateUserExpenseById,
+    getUserExpensesByDate,
   };
 }
