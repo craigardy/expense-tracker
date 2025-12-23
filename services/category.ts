@@ -74,3 +74,17 @@ export const getCategoryId = async(categoryName: string): Promise<string> => {
 
   return response.rows[0].$id;
 };
+
+export const updateCategory = async (categoryId: string, name: string) => {
+  const currentUser = await getCurrentUser();
+  if (!currentUser) throw new Error('No current user found');
+
+  return await tablesDB.updateRow({
+    databaseId: DATABASE_ID,
+    tableId: CATEGORIES_TABLE_ID,
+    rowId: categoryId,
+    data: {
+      name
+    }
+  });
+};

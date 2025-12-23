@@ -73,8 +73,12 @@ const Expenses = () => {
   return (
     <SafeAreaView className="bg-primary h-full">
       <View className="w-full flex-1 px-4 items-center">
-        <Image source={images.appLogo} className="w-[130px] h-[84px]" resizeMode="contain" />
-        <Text className="text-2xl text-white text-semibold mt-2 font-semibold">Expenses</Text>
+        <View className="flex-row items-center w-full relative">
+          <Image source={images.appLogo} className="w-[130px] h-[84px]" resizeMode="contain" />
+          <View className="absolute w-full items-center">
+            <Text className="text-2xl text-white text-semibold font-semibold">Expenses</Text>
+          </View>
+        </View>
         {/* Search */}
         <View className="rounded-xl pt-1 w-full mt-2 border-2">
             <FormField

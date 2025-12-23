@@ -129,13 +129,16 @@ const ExpenseForm = ({ title, initialValues, submitLabel, isSubmitting, onSubmit
 
       {showDatePicker && (
         <DateTimePicker
-          value={form.date ? new Date(form.date) : new Date()}
+          value={form.date ? new Date(form.date + 'T00:00:00') : new Date()}
           mode="date"
           display="default"
           onChange={(event, selectedDate) => {
             setShowDatePicker(false);
             if (selectedDate) {
-              setForm((prev) => ({ ...prev, date: selectedDate.toISOString().split('T')[0] }));
+              const year = selectedDate.getFullYear();
+              const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+              const day = String(selectedDate.getDate()).padStart(2, '0');
+              setForm((prev) => ({ ...prev, date: `${year}-${month}-${day}` }));
             }
           }}
         />

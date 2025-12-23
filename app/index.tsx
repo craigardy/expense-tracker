@@ -21,7 +21,6 @@ const Index = () => {
     return (
       <SafeAreaView className="bg-primary h-full">
         <View className="flex-1 justify-center items-center">
-          {/* You can add a loading spinner here if you want */}
         </View>
       </SafeAreaView>
     );

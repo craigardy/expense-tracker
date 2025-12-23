@@ -90,8 +90,8 @@ const ExpenseDetail = () => {
   return (
     <SafeAreaView className="bg-primary h-full">
       <View className="w-full flex-1 px-4 items-center">
-        <Image source={images.appLogo} className="w-[130px] h-[84px]" resizeMode="contain" />
-        <Text className="text-2xl text-white mt-2 font-semibold">Expense Details</Text>
+        {/* <Image source={images.appLogo} className="w-[130px] h-[84px]" resizeMode="contain" /> */}
+        {/* <Text className="text-2xl text-white mt-2 font-semibold">Expense Details</Text> */}
 
         <View className="w-full flex-1 pb-20">
           <View className="bg-dark-200 rounded-xl p-6 w-full mt-4 border-2 border-secondary flex-1">

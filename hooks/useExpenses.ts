@@ -3,35 +3,30 @@ import {
   addExpense,
   getExpensesByUser,
   getExpensesByUserAndId,
+  getUniqueExpenseDatesByUser,
   updateExpense,
   type UpdateExpenseInput,
 } from '../services/expense';
+
+export interface ExpenseMonth {
+  month: number;
+  year: number;
+}
+
+export interface UniqueExpenseDates {
+  months: ExpenseMonth[];
+  years: { year: number }[];
+}
 
 export function useExpenses() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [expenses, setExpenses] = useState<any[]>([]);
   const [expense, setExpense] = useState<any | null>(null);
+  const [dates, setDates] = useState<UniqueExpenseDates | null>(null);
 
-  const addNewExpense = async (
-    amount: number,
-    category: string,
-    date: string,
-    notes?: string
-  ) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const res = await addExpense(amount, category, date, notes);
-      return res;
-    } catch (err: any) {
-      setError(err.message || 'Failed to add expense');
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
+  // GETING
   const getUserExpenses = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -62,9 +57,49 @@ export function useExpenses() {
     }
   }, []);
 
+  const getUniqueUserExpenseDates = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const res = await getUniqueExpenseDatesByUser();
+      setDates(res);
+    } catch (err: any) {
+      setError(err.message || 'Failed to fetch expense dates');
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // ADDING & UPDATING
+  const addNewExpense = async (
+    amount: number,
+    category: string,
+    date: string,
+    notes?: string
+  ) => {
+    setIsLoading(true);
+    setError(null);
+    const [year, month, day] = date.split('-').map(Number);
+    try {
+      const res = await addExpense(amount, category, date, year, month, notes);
+      return res;
+    } catch (err: any) {
+      setError(err.message || 'Failed to add expense');
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const updateUserExpenseById = useCallback(async (expenseId: string, updates: UpdateExpenseInput) => {
     setIsLoading(true);
     setError(null);
+    if (updates.date) {
+      const [year, month, day] = updates.date.split('-').map(Number);
+      updates = { ...updates, year, month };
+    }
+
     try {
       const res = await updateExpense(expenseId, updates);
       setExpense(res);
@@ -81,11 +116,14 @@ export function useExpenses() {
   return {
     expense,
     expenses,
+    dates,
     isLoading,
     error,
-    addNewExpense,
+
     getUserExpenses,
     getUserExpenseById,
+    getUniqueUserExpenseDates,
+    addNewExpense,
     updateUserExpenseById,
   };
 }

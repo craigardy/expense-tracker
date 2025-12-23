@@ -1,9 +1,8 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useMemo } from 'react';
-import { Alert, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { images } from '../../../assets/constants/images';
 import ExpenseForm, { type ExpenseFormValues } from '../../../components/ExpenseForm';
 import { useExpenses } from '../../../hooks/useExpenses';
 
@@ -65,7 +64,7 @@ const EditExpense = () => {
         <View className="w-full flex-1 px-4 items-center justify-center">
           <Text className="text-red-400 text-lg">Error: {error}</Text>
           <TouchableOpacity
-            onPress={() => router.back()}
+            onPress={() => router.replace(`/expenses`)}
             className="mt-4 bg-secondary px-4 py-3 rounded-xl"
             activeOpacity={0.8}
           >
@@ -80,9 +79,9 @@ const EditExpense = () => {
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
         <View className="w-full flex-1 px-4 items-center justify-center">
-          <Image source={images.appLogo} className="w-[130px] h-[84px]" resizeMode="contain" />
+          {/* <Image source={images.appLogo} className="w-[130px] h-[84px]" resizeMode="contain" /> */}
           <ExpenseForm
-            title="Edit Expense"
+            title=""
             initialValues={initialValues}
             submitLabel="Save"
             isSubmitting={isLoading}
