@@ -6,12 +6,21 @@ import React from 'react';
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '../../assets/constants/images';
+import { useUser } from '../../hooks/useUser';
+
 
 const data = [
   { label: 'Edit Categories' },
 ];
 
 const Profile = () => {
+  const { signOut } = useUser();
+
+  const submit = async () => {
+    await signOut();
+    router.replace('/');
+  }
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <View className="w-full flex-1 px-4 items-center">
@@ -20,6 +29,13 @@ const Profile = () => {
           <View className="absolute w-full items-center">
             <Text className="text-white text-2xl font-semibold">Profile</Text>
           </View>
+          <TouchableOpacity
+            onPress={() => submit()}
+            className="absolute w-full items-end">
+            <View className="bg-red-500 rounded-md px-3 py-1 mr-2">
+              <Text className="text-white text-lg font-semibold">Logout</Text>
+            </View>
+          </TouchableOpacity>
         </View>
 
         <View className="w-full flex-1 pb-20">
