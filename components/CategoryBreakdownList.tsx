@@ -28,12 +28,13 @@ const CategoryBreakdownList: React.FC<CategoryBreakdownListProps> = ({ categoryD
   ), []);
 
   return (
-    <View className="w-full flex-1 pb-20">
-      <View className="bg-dark-200 rounded-xl p-6 w-full mt-4 border-2 border-secondary flex-1">
+    <View className="w-full">
+      <View className="bg-dark-200 rounded-xl pl-6 pr-6 pt-4 w-full mt-4 border-2 border-secondary">
         <FlatList
           data={categoryData}
           keyExtractor={(item) => item.name}
           renderItem={renderItem}
+          scrollEnabled={false}
           ListEmptyComponent={() => (
             <View className="justify-center items-center">
               <Text className="text-gray-300 text-lg mt-4">No expenses by category.</Text>
