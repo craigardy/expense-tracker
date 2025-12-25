@@ -88,7 +88,7 @@ const ExpenseForm = ({ title, initialValues, submitLabel, isSubmitting, onSubmit
 
   if (isBusy) {
     return (
-      <View className="absolute inset-0 justify-center items-center bg-black bg-opacity-50 z-10">
+      <View className="justify-center items-center py-20">
         <Text className="text-white text-lg">Loading...</Text>
       </View>
     );
