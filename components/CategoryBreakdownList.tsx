@@ -10,6 +10,7 @@ const CategoryBreakdownList: React.FC<CategoryBreakdownListProps> = ({ categoryD
   const renderItem = useCallback(({ item }: { item: CategoryData }) => (
     <View className="mb-4 p-4 bg-dark-100 rounded-lg">
       <View className="flex-row items-start">
+        <View className="w-4 h-4 rounded-full mr-3 mt-1" style={{ backgroundColor: item.color }} />
         <Text
           className="text-white text-lg font-semibold flex-1 pr-2"
           numberOfLines={2}>
@@ -19,7 +20,7 @@ const CategoryBreakdownList: React.FC<CategoryBreakdownListProps> = ({ categoryD
           ${item.amount.toFixed(2)}
         </Text>
         {/* Separator */}
-        <View className="w-px mx-3 bg-white self-stretch" />
+        <View className="w-px ml-3 bg-white self-stretch" />
         <Text className="text-white text-lg w-16 text-right">
           {item.percentage.toFixed(1)}%
         </Text>

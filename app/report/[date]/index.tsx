@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CategoryBreakdownList from '../../../components/CategoryBreakdownList';
 import ExpensePieChart from '../../../components/ExpensePieChart';
@@ -68,6 +68,7 @@ const ReportDetail = () => {
 
   return (
     <SafeAreaView className="bg-primary h-full">
+      <ScrollView>
           <View className="w-full flex-1 px-4 items-center pt-4">
             <View className="flex-row items-center w-full relative pb-10">
               <View className="absolute w-full items-center">
@@ -85,6 +86,7 @@ const ReportDetail = () => {
 
             <CategoryBreakdownList categoryData={categoryData} />
           </View>
+      </ScrollView>
     </SafeAreaView>
   );
 

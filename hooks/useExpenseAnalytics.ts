@@ -17,6 +17,7 @@ type CategoryData = {
   name: string;
   amount: number;
   percentage: number;
+  color: string;
 };
 
 type PieChartSeries = {
@@ -66,24 +67,31 @@ export const useExpenseAnalytics = (expenses: Expense[] | null, categories: Cate
   }, [expenses, categories]);
 
   const categoryData = useMemo(() => {
-    return Object.entries(totalsByCategory).map(([categoryId, amount]) => {
+    const hue = 360 / Object.keys(totalsByCategory).length;
+    return Object.entries(totalsByCategory).map(([categoryId, amount], index) => {
       const name = categoryIdToName[categoryId] || 'Unknown';
       const percentage = totalAmount > 0 ? (amount / totalAmount) * 100 : 0;
+      const color = `hsl(${index * hue}, 85%, 55%)`;
       return {
         name,
         amount,
         percentage,
+        color,
       };
     });
   }, [totalsByCategory, categoryIdToName, totalAmount]);
 
   const series = useMemo(() => {
     if (categoryData.length === 0) return [];
-    const hue = 360 / categoryData.length;
-    return categoryData.map((item, index) => ({
+    return categoryData.map((item) => ({
       value: item.amount,
-      color: `hsl(${index * hue}, 85%, 55%)`,
-      label: { text: item.name, fill: 'black', fontSize: 12, fontWeight: 'bold' },
+      // label: {
+      //   text: `${item.percentage.toFixed(1)}%`,
+      //   fill: 'black',
+      //   fontSize: 14,
+      //   fontWeight: 'bold',
+      // },
+      color: item.color,
     }));
   }, [categoryData]);
 

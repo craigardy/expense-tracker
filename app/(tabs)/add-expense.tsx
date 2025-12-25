@@ -22,7 +22,7 @@ const AddExpense = () => {
   };
 
   const [initialValues, setInitialValues] = useState<ExpenseFormValues>({
-    amount: '0.00',
+    amount: '',
     category: '',
     date: getLocalDateString(),
     notes: '',
