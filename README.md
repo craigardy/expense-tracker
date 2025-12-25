@@ -8,6 +8,14 @@ A comprehensive mobile expense tracking application built with React Native and 
 
 > **Note:** This application was primarily designed for mobile devices (iOS/Android) but is also available as a web application. For the best experience, please use a mobile device or enable mobile view in your browser's developer tools.
 
+## Screenshots
+
+<div align="center">
+  <img src="screenshots/home.png" alt="Home Page" width="250"/>
+  <img src="screenshots/expenses.png" alt="Expenses List" width="250"/>
+  <img src="screenshots/add-expense.png" alt="Add Expense" width="250"/>
+</div>
+
 ## Features
 
 - **Home Page** - View spending overview and recent transactions at a glance
