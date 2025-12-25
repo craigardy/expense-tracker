@@ -31,6 +31,7 @@ const FormField = ({ title, value, handleChangeText, otherStyles, keyboardType, 
         />
         {title === 'Password' && (
           <TouchableOpacity
+            className="ml-2"
             onPress={() => setShowPassword(!showPassword)}>
             <Text className="text-sm text-secondary font-medium">{showPassword ? 'Hide' : 'Show'}</Text>
           </TouchableOpacity>

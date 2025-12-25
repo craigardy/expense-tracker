@@ -67,24 +67,24 @@ const ReportDetail = () => {
   }
 
   return (
-    <SafeAreaView className="bg-primary h-full justify-center items-center">
-      <View className="w-full flex-1 px-4 items-center">
-        <View className="flex-row items-center w-full relative pb-10">
-          <View className="absolute w-full items-center">
-            <Text className="text-white text-2xl font-semibold">
-              {dateTitle}
+    <SafeAreaView className="bg-primary h-full">
+          <View className="w-full flex-1 px-4 items-center pt-4">
+            <View className="flex-row items-center w-full relative pb-10">
+              <View className="absolute w-full items-center">
+                <Text className="text-white text-2xl font-semibold">
+                  {dateTitle}
+                </Text>
+              </View>
+            </View>
+
+            <ExpensePieChart series={series} />
+
+            <Text className="text-white text-xl font-semibold mb-4">
+              Total: ${totalAmount.toFixed(2)}
             </Text>
+
+            <CategoryBreakdownList categoryData={categoryData} />
           </View>
-        </View>
-
-        <ExpensePieChart series={series} />
-
-        <Text className="text-white text-xl font-semibold mb-4">
-          Total: ${totalAmount.toFixed(2)}
-        </Text>
-
-        <CategoryBreakdownList categoryData={categoryData} />
-      </View>
     </SafeAreaView>
   );
 

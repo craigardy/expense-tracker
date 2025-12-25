@@ -1,7 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useCategories } from '../../hooks/useCategories';
 
@@ -51,7 +51,11 @@ const EditCategories = () => {
     );
 
     if (changedCategories.length === 0) {
-      Alert.alert('No Changes', 'No categories have been modified.');
+      if (Platform.OS === 'web') {
+        window.alert('No categories have been modified.');
+      } else {
+        Alert.alert('No Changes', 'No categories have been modified.');
+      }
       return;
     }
 
@@ -61,14 +65,23 @@ const EditCategories = () => {
       for (const cat of changedCategories) {
         await updateCategoryById(cat.$id, cat.name.trim());
       }
-      Alert.alert('Success', 'Categories updated successfully!', [
-        {
-          text: 'OK',
-          onPress: () => router.back(),
-        },
-      ]);
+      if (Platform.OS === 'web') {
+        window.alert('Categories updated successfully!');
+        router.back();
+      } else {
+        Alert.alert('Success', 'Categories updated successfully!', [
+          {
+            text: 'OK',
+            onPress: () => router.back(),
+          },
+        ]);
+      }
     } catch (error: any) {
-      Alert.alert('Error', error.message || 'Failed to update categories');
+      if (Platform.OS === 'web') {
+        window.alert(`Error: ${error.message || 'Failed to update categories'}`);
+      } else {
+        Alert.alert('Error', error.message || 'Failed to update categories');
+      }
     } finally {
       setIsSaving(false);
     }
@@ -76,21 +89,27 @@ const EditCategories = () => {
 
   const handleCancel = () => {
     if (hasChanges()) {
-      Alert.alert(
-        'Discard Changes?',
-        'You have unsaved changes. Are you sure you want to go back?',
-        [
-          {
-            text: 'Stay',
-            style: 'cancel',
-          },
-          {
-            text: 'Discard',
-            style: 'destructive',
-            onPress: () => router.back(),
-          },
-        ]
-      );
+      if (Platform.OS === 'web') {
+        if (window.confirm('You have unsaved changes. Are you sure you want to go back?')) {
+          router.back();
+        }
+      } else {
+        Alert.alert(
+          'Discard Changes?',
+          'You have unsaved changes. Are you sure you want to go back?',
+          [
+            {
+              text: 'Stay',
+              style: 'cancel',
+            },
+            {
+              text: 'Discard',
+              style: 'destructive',
+              onPress: () => router.back(),
+            },
+          ]
+        );
+      }
     } else {
       router.back();
     }

@@ -1,6 +1,6 @@
 import { Link, router } from 'expo-router'
 import React, { useState } from 'react'
-import { Alert, Image, ScrollView, Text, View } from 'react-native'
+import { Alert, Image, Platform, ScrollView, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../../assets/constants/images'
 import CustomButom from '../../components/CustomButton'
@@ -19,7 +19,11 @@ const SignUp = () => {
 
   const submit = async () => {
     if (!form.email || !form.password) {
-      Alert.alert('Error', 'Email and password are required');
+      if (Platform.OS === 'web') {
+        window.alert('Email and password are required');
+      } else {
+        Alert.alert('Error', 'Email and password are required');
+      }
       console.error('Email and password are required');
       return;
     }
@@ -27,7 +31,11 @@ const SignUp = () => {
       await registerUser(form.email, form.password);
       router.replace('/home');
     } catch (error: any) {
-      Alert.alert('Error', error.message || 'An error occurred during sign up');
+      if (Platform.OS === 'web') {
+        window.alert(`Error: ${error.message || 'An error occurred during sign up'}`);
+      } else {
+        Alert.alert('Error', error.message || 'An error occurred during sign up');
+      }
     }
   };
 
@@ -35,8 +43,12 @@ const SignUp = () => {
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
         <View className="w-full justify-center items-center min-h-[85vh] px-4">
-          <Image source={images.appLogo} className="w-[130px] h-[84px]" resizeMode="contain" />
-          <Text className="text-2xl text-white text-semibold mt-10 font-semibold">Sign up</Text>
+          <View className="flex-row items-center w-full relative">
+            <Image source={images.appLogo} className="w-[130px] h-[84px]" style={{ width: 130, height: 84 }} resizeMode="contain" />
+            <View className="absolute w-full items-center">
+              <Text className="text-white text-2xl font-semibold">Sign up</Text>
+            </View>
+          </View>
           <FormField
             title="Email"
             value={form.email}

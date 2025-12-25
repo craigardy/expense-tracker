@@ -1,6 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useMemo } from 'react';
-import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import ExpenseForm, { type ExpenseFormValues } from '../../../components/ExpenseForm';
@@ -33,7 +33,11 @@ const EditExpense = () => {
 
   const onSubmit = async (values: ExpenseFormValues) => {
     if (!id) {
-      Alert.alert('Error', 'Missing expense id');
+      if (Platform.OS === 'web') {
+        window.alert('Error: Missing expense id');
+      } else {
+        Alert.alert('Error', 'Missing expense id');
+      }
       return;
     }
     const amountFloat = parseFloat(values.amount);
@@ -44,7 +48,11 @@ const EditExpense = () => {
       notes: values.notes,
     });
 
-    Alert.alert('Success', 'Expense updated');
+    if (Platform.OS === 'web') {
+      window.alert('Expense updated');
+    } else {
+      Alert.alert('Success', 'Expense updated');
+    }
     router.replace(`/expense/${id}`);
   };
 

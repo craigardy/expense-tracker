@@ -52,7 +52,7 @@ const Reports = () => {
     <SafeAreaView className="bg-primary h-full">
       <View className="w-full flex-1 px-4 items-center">
         <View className="flex-row items-center w-full relative">
-          <Image source={images.appLogo} className="w-[130px] h-[84px]" resizeMode="contain" />
+          <Image source={images.appLogo} className="w-[130px] h-[84px]" style={{ width: 130, height: 84 }} resizeMode="contain" />
           <View className="absolute w-full items-center">
             <Text className="text-white text-2xl font-semibold">Reports</Text>
           </View>
@@ -90,7 +90,7 @@ const Reports = () => {
                       </Text>
                     </View>
                     <View className="flex-row items-center gap-1">
-                      <Image source={images.chevronRight} className="w-[40px] h-[20px]" resizeMode="contain" />
+                      <Image source={images.chevronRight} className="w-[40px] h-[20px]" style={{ width: 40, height: 20 }} resizeMode="contain" />
                     </View>
                   </TouchableOpacity>
                 </View>

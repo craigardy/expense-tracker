@@ -20,7 +20,7 @@ export const Expense = ({ category, date, amount, onPress }: ItemProps) => {
         </View>
         <View className="flex-row items-center gap-1">
           <Text className="text-white text-lg font-bold">${amount}</Text>
-          <Image source={images.chevronRight} className="w-[40px] h-[20px]" resizeMode="contain" />
+          <Image source={images.chevronRight} className="w-[40px] h-[20px]" style={{ width: 40, height: 20 }} resizeMode="contain" />
         </View>
       </TouchableOpacity>
     </View>

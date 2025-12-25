@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react'
-import { Alert, Image, ScrollView, View, Text } from 'react-native'
+import { Alert, Image, Platform, ScrollView, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../../assets/constants/images'
 import ExpenseForm, { type ExpenseFormValues } from '../../components/ExpenseForm'
@@ -42,32 +42,42 @@ const AddExpense = () => {
         date: getLocalDateString(),
         notes: '',
       });
-      Alert.alert('Success', 'Expense added successfully');
+      if (Platform.OS === 'web') {
+        window.alert('Expense added successfully');
+      } else {
+        Alert.alert('Success', 'Expense added successfully');
+      }
     } catch (error: any) {
-      Alert.alert('Error', error.message || 'An error occurred during expense addition');
+      if (Platform.OS === 'web') {
+        window.alert(`Error: ${error.message || 'An error occurred during expense addition'}`);
+      } else {
+        Alert.alert('Error', error.message || 'An error occurred during expense addition');
+      }
     }
   };
 
 
   return (
     <SafeAreaView className="bg-primary h-full">
-      <ScrollView>
-        <View className="w-full justify-center items-center min-h-[85vh] px-4">
-          <View className="flex-row items-center w-full relative">
-            <Image source={images.appLogo} className="w-[130px] h-[84px]" resizeMode="contain" />
-            <View className="absolute w-full items-center">
-              <Text className="text-white text-2xl font-semibold">Add Expense</Text>
+          <ScrollView>
+            <View className="w-full justify-center items-center min-h-[85vh] px-4">
+              
+              <View className="flex-row items-center w-full relative">
+                <Image source={images.appLogo} className="w-[130px] h-[84px]" style={{ width: 130, height: 84 }} resizeMode="contain" />
+                <View className="absolute w-full items-center">
+                  <Text className="text-white text-2xl font-semibold">Add Expense</Text>
+                </View>
+              </View>
+
+              <ExpenseForm
+                title=""
+                initialValues={initialValues}
+                submitLabel="Add"
+                isSubmitting={isExpenseLoading || isCatLoading}
+                onSubmit={submit}
+              />
             </View>
-          </View>
-          <ExpenseForm
-            title=""
-            initialValues={initialValues}
-            submitLabel="Add"
-            isSubmitting={isExpenseLoading || isCatLoading}
-            onSubmit={submit}
-          />
-        </View>
-      </ScrollView>
+          </ScrollView>
     </SafeAreaView>
   )
 }

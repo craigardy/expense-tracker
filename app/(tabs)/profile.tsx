@@ -3,9 +3,10 @@ log out, set custom spending categories,
 and configure app settings. */
 import { router } from 'expo-router';
 import React from 'react';
-import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, Image, Platform, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '../../assets/constants/images';
+import { useGlobalContext } from '../../context/GlobalProvider';
 import { useUser } from '../../hooks/useUser';
 
 
@@ -15,55 +16,72 @@ const data = [
 
 const Profile = () => {
   const { signOut } = useUser();
+  const { setIsLoggedIn, setUser } = useGlobalContext();
 
   const submit = async () => {
-    await signOut();
-    router.replace('/');
+    try {
+      await signOut();
+      setIsLoggedIn(false);
+      setUser(null);
+      router.replace('/');
+    } catch (error: any) {
+      if (Platform.OS === 'web') {
+        window.alert(`Error: ${error.message || 'Failed to sign out'}`);
+      } else {
+        Alert.alert('Error', error.message || 'Failed to sign out');
+      }
+    }
   }
 
   return (
     <SafeAreaView className="bg-primary h-full">
-      <View className="w-full flex-1 px-4 items-center">
-        <View className="flex-row items-center w-full relative">
-          <Image source={images.appLogo} className="w-[130px] h-[84px]" resizeMode="contain" />
-          <View className="absolute w-full items-center">
-            <Text className="text-white text-2xl font-semibold">Profile</Text>
-          </View>
-          <TouchableOpacity
-            onPress={() => submit()}
-            className="absolute w-full items-end">
-            <View className="bg-red-500 rounded-md px-3 py-1 mr-2">
-              <Text className="text-white text-lg font-semibold">Logout</Text>
+          <View className="w-full flex-1 px-4 items-center">
+            <View className="flex-row items-center w-full relative">
+              <Image
+                source={images.appLogo}
+                className="w-[130px] h-[84px]"
+                style={{ width: 130, height: 84 }}
+                resizeMode="contain"
+              />
+              <View className="absolute w-full items-center">
+                <Text className="text-white text-2xl font-semibold">Profile</Text>
+              </View>
+              
+              <TouchableOpacity
+                onPress={() => submit()}
+                className="absolute right-0">
+                <View className="bg-red-500 rounded-md px-3 py-1 mr-2">
+                  <Text className="text-white text-lg font-semibold">Logout</Text>
+                </View>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        </View>
 
-        <View className="w-full flex-1 pb-20">
-          <View className="bg-dark-200 rounded-xl p-6 w-full mt-4 border-2 border-secondary flex-1">
-            <FlatList
-              data={data}
-              keyExtractor={(item) => item.label}
-              renderItem={({ item }) => (
-                <View className="mb-4">
-                  <TouchableOpacity onPress={() => router.push('/profile/edit-categories')} className="flex-row justify-between items-center p-4 bg-dark-100 rounded-lg">
-                    <View>
-                      <Text className="text-white text-lg font-semibold">{item.label}</Text>
+            <View className="w-full flex-1 pb-20">
+              <View className="bg-dark-200 rounded-xl p-6 w-full mt-4 border-2 border-secondary flex-1">
+                <FlatList
+                  data={data}
+                  keyExtractor={(item) => item.label}
+                  renderItem={({ item }) => (
+                    <View className="mb-4">
+                      <TouchableOpacity onPress={() => router.push('/profile/edit-categories')} className="flex-row justify-between items-center p-4 bg-dark-100 rounded-lg">
+                        <View>
+                          <Text className="text-white text-lg font-semibold">{item.label}</Text>
+                        </View>
+                        <View className="flex-row items-center gap-1">
+                          <Image source={images.chevronRight} className="w-[40px] h-[20px]" style={{ width: 40, height: 20 }} resizeMode="contain" />
+                        </View>
+                      </TouchableOpacity>
                     </View>
-                    <View className="flex-row items-center gap-1">
-                      <Image source={images.chevronRight} className="w-[40px] h-[20px]" resizeMode="contain" />
+                  )}
+                  ListEmptyComponent={() => (
+                    <View className="justify-center items-center">
+                      <Text className="text-gray-300 text-lg mt-4">No profile details available.</Text>
                     </View>
-                  </TouchableOpacity>
-                </View>
-              )}
-              ListEmptyComponent={() => (
-                <View className="justify-center items-center">
-                  <Text className="text-gray-300 text-lg mt-4">No profile details available.</Text>
-                </View>
-              )}
-            />
+                  )}
+                />
+              </View>
+            </View>
           </View>
-        </View>
-      </View>
     </SafeAreaView>
   )
 }

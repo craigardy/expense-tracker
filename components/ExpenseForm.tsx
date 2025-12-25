@@ -1,7 +1,7 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Alert, Modal, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Modal, Platform, Text, TouchableOpacity, View } from 'react-native';
 
 import { useCategories } from '../hooks/useCategories';
 import CustomButton from './CustomButton';
@@ -43,7 +43,11 @@ const ExpenseForm = ({ title, initialValues, submitLabel, isSubmitting, onSubmit
   const validate = () => {
     const amountFloat = parseFloat(form.amount);
     if (!form.amount || Number.isNaN(amountFloat) || !form.category || !form.date) {
-      Alert.alert('Error', 'valid amount, category, and date are required');
+      if (Platform.OS === 'web') {
+        window.alert('Valid amount, category, and date are required');
+      } else {
+        Alert.alert('Error', 'valid amount, category, and date are required');
+      }
       return false;
     }
     return true;
@@ -54,7 +58,11 @@ const ExpenseForm = ({ title, initialValues, submitLabel, isSubmitting, onSubmit
     try {
       await onSubmit(form);
     } catch (error: any) {
-      Alert.alert('Error', error?.message || 'An error occurred');
+      if (Platform.OS === 'web') {
+        window.alert(`Error: ${error?.message || 'An error occurred'}`);
+      } else {
+        Alert.alert('Error', error?.message || 'An error occurred');
+      }
     }
   };
 
@@ -65,7 +73,11 @@ const ExpenseForm = ({ title, initialValues, submitLabel, isSubmitting, onSubmit
       setShowAddCategory(false);
       setNewCategoryName('');
     } catch (error: any) {
-      Alert.alert('Error', error.message || 'Failed to add category');
+      if (Platform.OS === 'web') {
+        window.alert(`Error: ${error.message || 'Failed to add category'}`);
+      } else {
+        Alert.alert('Error', error.message || 'Failed to add category');
+      }
     }
   };
 
@@ -84,7 +96,7 @@ const ExpenseForm = ({ title, initialValues, submitLabel, isSubmitting, onSubmit
 
   return (
     <>
-      <Text className="text-2xl text-white text-semibold mt-10 font-semibold">{title}</Text>
+      <Text className="text-2xl text-white text-semibold mt-2 font-semibold">{title}</Text>
 
       <FormField
         title="Amount"
@@ -94,7 +106,7 @@ const ExpenseForm = ({ title, initialValues, submitLabel, isSubmitting, onSubmit
         keyboardType="numeric"
       />
 
-      <View className="mt-7 space-y-2">
+      <View className="mt-2 space-y-2 w-full">
         <Text className="text-base text-gray-100 font-medium">Category</Text>
         <View className="border-2 border-black-200 w-full h-16 px-4 bg-dark-100 rounded-2xl focus:border-secondary flex-row items-center">
           <Picker
@@ -102,7 +114,8 @@ const ExpenseForm = ({ title, initialValues, submitLabel, isSubmitting, onSubmit
             onValueChange={(itemValue) => {
               setForm((prev) => ({ ...prev, category: itemValue }));
             }}
-            style={{ flex: 1, color: '#FFFFFF' }}
+            style={{ flex: 1, color: '#FFFFFF', backgroundColor: 'transparent' }}
+            dropdownIconColor="#FFFFFF"
           >
             <Picker.Item label="Select a category..." value="" />
             {categories.map((category: { $id: string; name: string }) => (
@@ -115,19 +128,41 @@ const ExpenseForm = ({ title, initialValues, submitLabel, isSubmitting, onSubmit
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity onPress={() => setShowDatePicker(true)} activeOpacity={0.7}>
-        <View pointerEvents="none" className="w-full justify-center items-center">
-          <FormField
-            title="Date"
-            value={form.date}
-            handleChangeText={(e: string) => setForm((prev) => ({ ...prev, date: e }))}
-            otherStyles="mt-7"
-            editable={false}
-          />
-        </View>
-      </TouchableOpacity>
+      <View className="mt-2 space-y-2 w-full">
+        <Text className="text-base text-gray-100 font-medium">Date</Text>
+        {Platform.OS === 'web' ? (
+          <View className="border-2 border-black-200 w-full h-16 px-4 bg-dark-100 rounded-2xl focus:border-secondary flex-row items-center">
+            <input
+              type="date"
+              value={form.date}
+              onChange={(e) => setForm((prev) => ({ ...prev, date: e.target.value }))}
+              style={{
+                flex: 1,
+                color: '#FFFFFF',
+                backgroundColor: 'transparent',
+                border: 'none',
+                outline: 'none',
+                fontSize: 16,
+                fontFamily: 'inherit',
+              }}
+            />
+          </View>
+        ) : (
+          <TouchableOpacity onPress={() => setShowDatePicker(true)} activeOpacity={0.7} className="w-full">
+            <View pointerEvents="none">
+              <FormField
+                title=""
+                value={form.date}
+                handleChangeText={(e: string) => setForm((prev) => ({ ...prev, date: e }))}
+                otherStyles=""
+                editable={false}
+              />
+            </View>
+          </TouchableOpacity>
+        )}
+      </View>
 
-      {showDatePicker && (
+      {Platform.OS !== 'web' && showDatePicker && (
         <DateTimePicker
           value={form.date ? new Date(form.date + 'T00:00:00') : new Date()}
           mode="date"
@@ -172,7 +207,7 @@ const ExpenseForm = ({ title, initialValues, submitLabel, isSubmitting, onSubmit
           disabled={isSubmitting || isCatLoading}
         >
           <TouchableOpacity activeOpacity={1} disabled={isSubmitting || isCatLoading}>
-            <View className="bg-dark-200 rounded-xl p-6 w-4/5 border-2 border-secondary">
+            <View className="bg-dark-200 rounded-xl p-6 border-2 border-secondary" style={{ width: 320, maxWidth: '90%' }}>
               <FormField
                 title="Category Name"
                 value={newCategoryName}
@@ -184,19 +219,23 @@ const ExpenseForm = ({ title, initialValues, submitLabel, isSubmitting, onSubmit
                 otherStyles={''}
                 autoFocus={true}
               />
-              <View className="flex-row mt-7">
-                <CustomButton
-                  title="Save"
-                  handlePress={handleSaveCategory}
-                  containerStyles="w-1/2 m-1"
-                  isLoading={isSubmitting || isCatLoading}
-                />
-                <CustomButton
-                  title="Cancel"
-                  handlePress={handleCancelAddCategory}
-                  containerStyles="w-1/2 m-1"
-                  isLoading={isSubmitting || isCatLoading}
-                />
+              <View className="flex-row mt-7 gap-2">
+                <View className="flex-1">
+                  <CustomButton
+                    title="Save"
+                    handlePress={handleSaveCategory}
+                    containerStyles="w-full"
+                    isLoading={isSubmitting || isCatLoading}
+                  />
+                </View>
+                <View className="flex-1">
+                  <CustomButton
+                    title="Cancel"
+                    handlePress={handleCancelAddCategory}
+                    containerStyles="w-full"
+                    isLoading={isSubmitting || isCatLoading}
+                  />
+                </View>
               </View>
             </View>
           </TouchableOpacity>
