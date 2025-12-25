@@ -12,7 +12,7 @@ const CategoryBreakdownList: React.FC<CategoryBreakdownListProps> = ({ categoryD
       <View className="flex-row items-start">
         <View className="w-4 h-4 rounded-full mr-1 mt-1.5" style={{ backgroundColor: item.color }} />
         <Text
-          className="text-white text-lg font-semibold flex-1 pr-2"
+          className="text-white text-lg font-semibold flex-1"
           numberOfLines={2}>
           {item.name}
         </Text>

@@ -68,17 +68,19 @@ export const useExpenseAnalytics = (expenses: Expense[] | null, categories: Cate
 
   const categoryData = useMemo(() => {
     const hue = 360 / Object.keys(totalsByCategory).length;
-    return Object.entries(totalsByCategory).map(([categoryId, amount], index) => {
-      const name = categoryIdToName[categoryId] || 'Unknown';
-      const percentage = totalAmount > 0 ? (amount / totalAmount) * 100 : 0;
-      const color = `hsl(${index * hue}, 85%, 55%)`;
-      return {
-        name,
-        amount,
-        percentage,
-        color,
-      };
-    });
+    return Object.entries(totalsByCategory)
+      .map(([categoryId, amount], index) => {
+        const name = categoryIdToName[categoryId] || 'Unknown';
+        const percentage = totalAmount > 0 ? (amount / totalAmount) * 100 : 0;
+        const color = `hsl(${index * hue}, 85%, 55%)`;
+        return {
+          name,
+          amount,
+          percentage,
+          color,
+        };
+      })
+      .sort((a, b) => b.amount - a.amount);
   }, [totalsByCategory, categoryIdToName, totalAmount]);
 
   const series = useMemo(() => {
