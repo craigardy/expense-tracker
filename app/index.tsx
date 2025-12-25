@@ -46,7 +46,7 @@ const Index = () => {
 
           <View className="w-full flex-1 justify-center pb-20">
             <View className="relative">
-              <Text className="text-5xl text-white font-bold text-center">
+              <Text className="text-4xl text-white font-bold text-center">
                 Simple tracking. Smarter decisions.
               </Text>
             </View>
