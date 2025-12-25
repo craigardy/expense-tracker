@@ -42,3 +42,27 @@ app-example
 # generated native folders
 /ios
 /android
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Cache files
+.eslintcache
+.prettierrc.cache
+
+# Build & Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# OS files
+Thumbs.db
+ehthumbs.db
