@@ -2,6 +2,12 @@
 
 A comprehensive mobile expense tracking application built with React Native and Expo. This app helps users manage their finances by tracking expenses, categorizing spending, and visualizing financial data through charts and reports.
 
+## Live Demo
+
+**[View Web App](https://expense-tracker-59s.pages.dev/)**
+
+> **Note:** This application was primarily designed for mobile devices (iOS/Android) but is also available as a web application. For the best experience, please use a mobile device or enable mobile view in your browser's developer tools.
+
 ## Features
 
 - **Home Page** - View spending overview and recent transactions at a glance
@@ -18,23 +24,9 @@ A comprehensive mobile expense tracking application built with React Native and 
 - **React Native** - Cross-platform mobile framework for iOS and Android
 - **Expo** - Development platform and build service
 - **TypeScript** - Type-safe JavaScript development
+- **Expo Router** - File-based routing for React Native
 - **Appwrite** - Backend-as-a-service for authentication, database, and file storage
-- **React Navigation** - Navigation and routing
 - **NativeWind** - Tailwind CSS styling for React Native
-
-## Getting Started
-
-1. Clone the repository
-   ```bash
-   git clone https://github.com/craigardy/expense-tracker.git
-   cd expense-tracker
-   ```
-
-2. Install dependencies and start
-   ```bash
-   npm install
-   npm start
-   ```
 
 ## License
 

@@ -34,16 +34,14 @@ const Index = () => {
     <SafeAreaView className="bg-primary h-full">
       <ScrollView contentContainerStyle={{ height: '100%' }}>
         <View className="w-full flex-1 px-4 items-center">
-          <View className="flex-row items-center w-full relative">
+          <View className="items-center w-full">
             <Image
               source={images.appLogo}
               className="w-[130px] h-[84px]"
               style={{ width: 130, height: 84 }}
               resizeMode="contain"
             />
-            <View className="absolute w-full items-center">
-              <Text className="text-white text-2xl font-semibold">Expense Tracker</Text>
-            </View>
+            <Text className="text-white text-xl font-semibold mt-2">Expense Tracker</Text>
           </View>
 
           <View className="w-full flex-1 justify-center pb-20">
