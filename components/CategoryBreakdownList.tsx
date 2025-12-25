@@ -8,9 +8,9 @@ type CategoryBreakdownListProps = {
 
 const CategoryBreakdownList: React.FC<CategoryBreakdownListProps> = ({ categoryData }) => {
   const renderItem = useCallback(({ item }: { item: CategoryData }) => (
-    <View className="mb-4 p-4 bg-dark-100 rounded-lg">
+    <View className="mb-2 p-2 bg-dark-100 rounded-lg">
       <View className="flex-row items-start">
-        <View className="w-4 h-4 rounded-full mr-3 mt-1" style={{ backgroundColor: item.color }} />
+        <View className="w-4 h-4 rounded-full mr-1 mt-1.5" style={{ backgroundColor: item.color }} />
         <Text
           className="text-white text-lg font-semibold flex-1 pr-2"
           numberOfLines={2}>
@@ -30,7 +30,7 @@ const CategoryBreakdownList: React.FC<CategoryBreakdownListProps> = ({ categoryD
 
   return (
     <View className="w-full">
-      <View className="bg-dark-200 rounded-xl pl-6 pr-6 pt-4 w-full mt-4 border-2 border-secondary">
+      <View className="bg-dark-200 rounded-xl pl-2 pr-2 pt-2 w-full mt-4 border-2 border-secondary">
         <FlatList
           data={categoryData}
           keyExtractor={(item) => item.name}
