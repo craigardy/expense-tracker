@@ -48,6 +48,7 @@ app-example
 .idea/
 *.swp
 *.swo
+expense-tracker.code-workspace
 
 # Cache files
 .eslintcache
