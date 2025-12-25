@@ -41,7 +41,3 @@ A comprehensive mobile expense tracking application built with React Native and 
 ## License
 
 This project is open source and available under the MIT License.
-
-## Contact
-
-For questions or feedback, please reach out via GitHub or visit the repository at [craigardy/expense-tracker](https://github.com/craigardy/expense-tracker).
