@@ -10,11 +10,13 @@ A comprehensive mobile expense tracking application built with React Native and 
 
 ## Screenshots
 
-<div align="center">
-  <img src="screenshots/home.jpg" alt="Home Page" width="250" style="margin: 0 30px;"/>
-  <img src="screenshots/expenses.jpg" alt="Expenses List" width="250" style="margin: 0 30px;"/>
-  <img src="screenshots/add-expense.jpg" alt="Add Expense" width="250" style="margin: 0 30px;"/>
-</div>
+<p align="center">
+  <img src="screenshots/home.jpg" alt="Home Page" width="250"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="screenshots/expenses.jpg" alt="Expenses List" width="250"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="screenshots/add-expense.jpg" alt="Add Expense" width="250"/>
+</p>
 
 ## Features
 
