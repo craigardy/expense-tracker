@@ -24,7 +24,10 @@
     "web": {
       "output": "static",
       "favicon": "./assets/images/money-check-dollar-solid-full-white.png",
-      "bundler": "metro"
+      "bundler": "metro",
+      "themeColor": "#000000",
+      "backgroundColor": "#000000",
+      "manifest": "./public/manifest.json"
     },
     "plugins": [
       "expo-router",
