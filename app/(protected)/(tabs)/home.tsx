@@ -1,6 +1,7 @@
 /* The main screen users see after logging in. 
 It could show a summary of recent expenses, a
 chart of spending for the current month */
+import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -20,17 +21,14 @@ const Home = () => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
 
-  React.useEffect(() => {
-    getUserExpensesByMonth(year, month);
-  }, [getUserExpensesByMonth, year, month]);
-
-  React.useEffect(() => {
-    getUserExpensesByYear(year);
-  }, [getUserExpensesByYear, year]);
-
-  React.useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
+  // Refetch data whenever the screen comes into focus (including initial mount)
+  useFocusEffect(
+    React.useCallback(() => {
+      getUserExpensesByMonth(year, month);
+      getUserExpensesByYear(year);
+      fetchCategories();
+    }, [getUserExpensesByMonth, getUserExpensesByYear, fetchCategories, year, month])
+  );
 
   // Use the expense analytics hook for data processing
   const { totalAmount: monthTotalAmount, categoryData: monthCategoryData, series: monthSeries } = useExpenseAnalytics(monthExpenses, categories);

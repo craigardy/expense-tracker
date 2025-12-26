@@ -1,16 +1,11 @@
-import { Account, Client, ID, TablesDB } from 'react-native-appwrite';
+import { account, DATABASE_ID, ID, tablesDB, USERS_TABLE_ID, type Models } from '../lib/appwrite';
 
-const DATABASE_ID = process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
-const USERS_TABLE_ID = process.env.EXPO_PUBLIC_APPWRITE_USERS_TABLE_ID!;
-
-const client = new Client();
-client
-  .setEndpoint(process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!)
-  .setProject(process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!)
-  .setPlatform(process.env.EXPO_PUBLIC_APPWRITE_PLATFORM_ID!)
-
-const tablesDB = new TablesDB(client);
-const account = new Account(client);
+export interface User extends Models.Row {
+  email: string;
+  $id: string;
+  $createdAt: string;
+  $updatedAt: string;
+}
 
 export const deleteCurrentSession = async () => {
   try {
@@ -23,7 +18,7 @@ export const deleteCurrentSession = async () => {
   }
 }
 
-export const signIn = async (email: string, password: string) => {
+export const signIn = async (email: string, password: string): Promise<Models.Session> => {
   await deleteCurrentSession();
   return await account.createEmailPasswordSession({
     email,
@@ -31,7 +26,7 @@ export const signIn = async (email: string, password: string) => {
   });
 };
 
-export const createUser = async (email: string, password: string) => {
+export const createUser = async (email: string, password: string): Promise<User> => {
   const newAccount = await account.create({
     userId: ID.unique(),
     email,
@@ -40,7 +35,7 @@ export const createUser = async (email: string, password: string) => {
 
   await signIn(email, password);
 
-  const newUser = await tablesDB.createRow({
+  const newUser = await tablesDB.createRow<User>({
     databaseId: DATABASE_ID,
     tableId: USERS_TABLE_ID,
     rowId: newAccount.$id,
@@ -52,12 +47,12 @@ export const createUser = async (email: string, password: string) => {
   return newUser;
 };
 
-export const getCurrentUser = async () => {
+export const getCurrentUser = async (): Promise<User | undefined> => {
   try {
     const currentAccount = await account.get();
     if (!currentAccount.$id) throw Error;
 
-    const currentUser = await tablesDB.getRow({
+    const currentUser = await tablesDB.getRow<User>({
       databaseId: DATABASE_ID,
       tableId: USERS_TABLE_ID,
       rowId: currentAccount.$id

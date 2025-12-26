@@ -37,7 +37,7 @@ const AddExpense = () => {
     try {
       await addNewExpense(amountFloat, values.category, values.date, values.notes);
       setInitialValues({
-        amount: '0.00',
+        amount: '',
         category: '',
         date: getLocalDateString(),
         notes: '',

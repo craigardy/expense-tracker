@@ -103,7 +103,8 @@ const ExpenseForm = ({ title, initialValues, submitLabel, isSubmitting, onSubmit
         value={form.amount.toString()}
         handleChangeText={(e: string) => setForm((prev) => ({ ...prev, amount: e }))}
         otherStyles="mt-7"
-        keyboardType="decimal-pad"
+        keyboardType="numeric"
+        placeholder="0.00"
       />
 
       <View className="mt-2 space-y-2 w-full">

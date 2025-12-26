@@ -1,21 +1,24 @@
-import { Client, ID, Query, TablesDB } from 'react-native-appwrite';
+import { DATABASE_ID, EXPENSES_TABLE_ID, ID, Query, tablesDB, type Models } from '../lib/appwrite';
 import { getCurrentUser } from './user';
-const DATABASE_ID = process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
-const EXPENSES_TABLE_ID = process.env.EXPO_PUBLIC_APPWRITE_EXPENSES_TABLE_ID!;
 
-const client = new Client();
-client
-  .setEndpoint(process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!)
-  .setProject(process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!)
-  .setPlatform(process.env.EXPO_PUBLIC_APPWRITE_PLATFORM_ID!)
+export interface Expense extends Models.Row {
+  user: string;
+  amount: number;
+  category: string;
+  date: string;
+  year: number;
+  month: number;
+  notes?: string;
+  $id: string;
+  $createdAt: string;
+  $updatedAt: string;
+}
 
-const tablesDB = new TablesDB(client);
 
-
-export const getExpensesByUser = async () => {
+export const getExpensesByUser = async (): Promise<Expense[]> => {
   const currentUser = await getCurrentUser();
   if (!currentUser) throw new Error('No current user found');
-  const response = await tablesDB.listRows({
+  const response = await tablesDB.listRows<Expense>({
     databaseId: DATABASE_ID,
     tableId: EXPENSES_TABLE_ID,
     queries: [
@@ -26,10 +29,10 @@ export const getExpensesByUser = async () => {
   return response.rows;
 };
 
-export const getExpensesByUserAndId = async (expenseId: string) => {
+export const getExpensesByUserAndId = async (expenseId: string): Promise<Expense> => {
   const currentUser = await getCurrentUser();
   if (!currentUser) throw new Error('No current user found');
-  const response = await tablesDB.listRows({
+  const response = await tablesDB.listRows<Expense>({
     databaseId: DATABASE_ID,
     tableId: EXPENSES_TABLE_ID,
     queries: [
@@ -53,7 +56,7 @@ export type ExpenseYear = {
 export const getUniqueExpenseDatesByUser = async () => {
   const currentUser = await getCurrentUser();
   if (!currentUser) throw new Error('No current user found');
-  const response = await tablesDB.listRows({
+  const response = await tablesDB.listRows<Expense>({
     databaseId: DATABASE_ID,
     tableId: EXPENSES_TABLE_ID,
     queries: [
@@ -93,10 +96,10 @@ export const getUniqueExpenseDatesByUser = async () => {
   };
 };
 
-export const getExpensesByUserAndYear = async (year: number) => {
+export const getExpensesByUserAndYear = async (year: number): Promise<Expense[]> => {
   const currentUser = await getCurrentUser();
   if (!currentUser) throw new Error('No current user found');
-  const response = await tablesDB.listRows({
+  const response = await tablesDB.listRows<Expense>({
     databaseId: DATABASE_ID,
     tableId: EXPENSES_TABLE_ID,
     queries: [
@@ -107,10 +110,10 @@ export const getExpensesByUserAndYear = async (year: number) => {
   return response.rows;
 };
 
-export const getExpensesByUserAndMonth = async (year: number, month: number) => {
+export const getExpensesByUserAndMonth = async (year: number, month: number): Promise<Expense[]> => {
   const currentUser = await getCurrentUser();
   if (!currentUser) throw new Error('No current user found');
-  const response = await tablesDB.listRows({
+  const response = await tablesDB.listRows<Expense>({
     databaseId: DATABASE_ID,
     tableId: EXPENSES_TABLE_ID,
     queries: [
@@ -131,17 +134,17 @@ export type UpdateExpenseInput = {
   month?: number;
 };
 
-export const addExpense = async (amount: number, category: string, date: string, year: number, month: number, notes?: string) => {
+export const addExpense = async (amount: number, category: string, date: string, year: number, month: number, notes?: string): Promise<Expense> => {
   const currentUser = await getCurrentUser();
   if (!currentUser) throw new Error('No current user found');
-  return await tablesDB.createRow({
+  return await tablesDB.createRow<Expense>({
     databaseId: DATABASE_ID,
     tableId: EXPENSES_TABLE_ID,
     rowId: ID.unique(),
     data: {
       user: currentUser.$id,
       amount,
-      category, // use the ID directly
+      category, 
       date,
       year,
       month,
@@ -150,7 +153,7 @@ export const addExpense = async (amount: number, category: string, date: string,
   });
 };
 
-export const updateExpense = async (expenseId: string, updates: UpdateExpenseInput) => {
+export const updateExpense = async (expenseId: string, updates: UpdateExpenseInput): Promise<Expense> => {
   const currentUser = await getCurrentUser();
   if (!currentUser) throw new Error('No current user found');
 
@@ -160,7 +163,7 @@ export const updateExpense = async (expenseId: string, updates: UpdateExpenseInp
     throw new Error('Not authorized to update this expense');
   }
 
-  return await tablesDB.updateRow({
+  return await tablesDB.updateRow<Expense>({
     databaseId: DATABASE_ID,
     tableId: EXPENSES_TABLE_ID,
     rowId: expenseId,
