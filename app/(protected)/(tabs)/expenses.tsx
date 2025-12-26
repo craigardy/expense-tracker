@@ -13,11 +13,11 @@ import { useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { FlatList, Image, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { images } from '../../assets/constants/images';
-import { Expense } from '../../components/Expense';
-import FormField from '../../components/FormField';
-import { useCategories } from '../../hooks/useCategories';
-import { useExpenses } from '../../hooks/useExpenses';
+import { images } from '../../../assets/constants/images';
+import { Expense } from '../../../components/Expense';
+import FormField from '../../../components/FormField';
+import { useCategories } from '../../../hooks/useCategories';
+import { useExpenses } from '../../../hooks/useExpenses';
 
 
 const Expenses = () => {

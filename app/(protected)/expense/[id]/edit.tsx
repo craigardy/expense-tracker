@@ -3,8 +3,8 @@ import React, { useMemo } from 'react';
 import { Alert, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import ExpenseForm, { type ExpenseFormValues } from '../../../components/ExpenseForm';
-import { useExpenses } from '../../../hooks/useExpenses';
+import ExpenseForm, { type ExpenseFormValues } from '../../../../components/ExpenseForm';
+import { useExpenses } from '../../../../hooks/useExpenses';
 
 const EditExpense = () => {
   const { id } = useLocalSearchParams();

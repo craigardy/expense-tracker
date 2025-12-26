@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, Image, Platform, ScrollView, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { images } from '../../assets/constants/images'
-import ExpenseForm, { type ExpenseFormValues } from '../../components/ExpenseForm'
-import { useCategories } from '../../hooks/useCategories'
-import { useExpenses } from '../../hooks/useExpenses'
+import { images } from '../../../assets/constants/images'
+import ExpenseForm, { type ExpenseFormValues } from '../../../components/ExpenseForm'
+import { useCategories } from '../../../hooks/useCategories'
+import { useExpenses } from '../../../hooks/useExpenses'
 
 
 

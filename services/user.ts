@@ -1,4 +1,5 @@
 import { Account, Client, ID, TablesDB } from 'react-native-appwrite';
+
 const DATABASE_ID = process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
 const USERS_TABLE_ID = process.env.EXPO_PUBLIC_APPWRITE_USERS_TABLE_ID!;
 

@@ -6,8 +6,8 @@ import { router } from 'expo-router';
 import React, { useEffect } from 'react';
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { images } from '../../assets/constants/images';
-import { useExpenses } from '../../hooks/useExpenses';
+import { images } from '../../../assets/constants/images';
+import { useExpenses } from '../../../hooks/useExpenses';
 
 
 type ListItem =

@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, FlatList, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useCategories } from '../../hooks/useCategories';
+import { useCategories } from '../../../hooks/useCategories';
 
 interface EditableCategory {
   $id: string;

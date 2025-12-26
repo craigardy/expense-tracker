@@ -4,12 +4,12 @@ chart of spending for the current month */
 import React from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { images } from '../../assets/constants/images';
-import CategoryBreakdownList from '../../components/CategoryBreakdownList';
-import ExpensePieChart from '../../components/ExpensePieChart';
-import { useCategories } from '../../hooks/useCategories';
-import { useExpenseAnalytics } from '../../hooks/useExpenseAnalytics';
-import { useExpenses } from '../../hooks/useExpenses';
+import { images } from '../../../assets/constants/images';
+import CategoryBreakdownList from '../../../components/CategoryBreakdownList';
+import ExpensePieChart from '../../../components/ExpensePieChart';
+import { useCategories } from '../../../hooks/useCategories';
+import { useExpenseAnalytics } from '../../../hooks/useExpenseAnalytics';
+import { useExpenses } from '../../../hooks/useExpenses';
 
 const Home = () => {
   const { getUserExpensesByDate: getUserExpensesByMonth, expenses: monthExpenses, isLoading: isMonthExpenseLoading, error: monthExpenseError } = useExpenses();

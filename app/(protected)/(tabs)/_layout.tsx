@@ -2,7 +2,7 @@ import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { Image } from 'react-native';
-import { icons } from '../../assets/constants/icons';
+import { icons } from '../../../assets/constants/icons';
 
 const TabsLayout = () => {
   return (

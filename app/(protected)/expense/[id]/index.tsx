@@ -1,11 +1,10 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useMemo } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { format } from 'date-fns';
-import { images } from '../../../assets/constants/images';
-import { useCategories } from '../../../hooks/useCategories';
-import { useExpenses } from '../../../hooks/useExpenses';
+import { useCategories } from '../../../../hooks/useCategories';
+import { useExpenses } from '../../../../hooks/useExpenses';
 
 
 const ExpenseDetail = () => {
@@ -90,9 +89,6 @@ const ExpenseDetail = () => {
   return (
     <SafeAreaView className="bg-primary h-full">
       <View className="w-full flex-1 px-4 items-center">
-        {/* <Image source={images.appLogo} className="w-[130px] h-[84px]" resizeMode="contain" /> */}
-        {/* <Text className="text-2xl text-white mt-2 font-semibold">Expense Details</Text> */}
-
         <View className="w-full flex-1 pb-20">
           <View className="bg-dark-200 rounded-xl p-6 w-full mt-4 border-2 border-secondary flex-1">
             <View className="flex-row justify-between items-center">

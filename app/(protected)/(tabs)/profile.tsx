@@ -5,9 +5,8 @@ import { router } from 'expo-router';
 import React from 'react';
 import { Alert, FlatList, Image, Platform, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { images } from '../../assets/constants/images';
-import { useGlobalContext } from '../../context/GlobalProvider';
-import { useUser } from '../../hooks/useUser';
+import { images } from '../../../assets/constants/images';
+import { useUser } from '../../../hooks/useUser';
 
 
 const data = [
@@ -16,13 +15,10 @@ const data = [
 
 const Profile = () => {
   const { signOut } = useUser();
-  const { setIsLoggedIn, setUser } = useGlobalContext();
 
   const submit = async () => {
     try {
       await signOut();
-      setIsLoggedIn(false);
-      setUser(null);
       router.replace('/');
     } catch (error: any) {
       if (Platform.OS === 'web') {

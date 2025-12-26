@@ -23,12 +23,6 @@ type CategoryData = {
 type PieChartSeries = {
   value: number;
   color: string;
-  label: {
-    text: string;
-    fill: string;
-    fontSize: number;
-    fontWeight: string;
-  };
 };
 
 export const useExpenseAnalytics = (expenses: Expense[] | null, categories: Category[] | null) => {

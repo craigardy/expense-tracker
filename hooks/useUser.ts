@@ -1,32 +1,21 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { signIn, createUser, getCurrentUser, deleteCurrentSession } from '../services/user';
+import { useGlobalContext } from '../context/GlobalProvider';
 
 export function useUser() {
-  const [user, setUser] = useState<any>(null);
+  // Use global context as single source of truth for user state
+  const { user, isLoggedIn, setUser, setIsLoggedIn } = useGlobalContext();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const fetchCurrentUser = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const currentUser = await getCurrentUser();
-      setUser(currentUser);
-      return currentUser;
-    } catch (err: any) {
-      setError(err.message || 'Failed to fetch user');
-      setUser(null);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
 
   const signInUser = async (email: string, password: string) => {
     setIsLoading(true);
     setError(null);
     try {
       await signIn(email, password);
-      await fetchCurrentUser();
+      const currentUser = await getCurrentUser();
+      setUser(currentUser);
+      setIsLoggedIn(true);
     } catch (err: any) {
       setError(err.message || 'Failed to sign in');
       throw err;
@@ -40,7 +29,9 @@ export function useUser() {
     setError(null);
     try {
       await createUser(email, password);
-      await fetchCurrentUser();
+      const currentUser = await getCurrentUser();
+      setUser(currentUser);
+      setIsLoggedIn(true);
     } catch (err: any) {
       setError(err.message || 'Failed to register');
       throw err;
@@ -55,12 +46,14 @@ export function useUser() {
     try {
       await deleteCurrentSession();
       setUser(null);
+      setIsLoggedIn(false);
     } catch (err: any) {
       setError(err.message || 'Failed to sign out');
+      throw err;
     } finally {
       setIsLoading(false);
     }
   };
 
-  return { user, isLoading, error, fetchCurrentUser, signInUser, registerUser, signOut };
+  return { user, isLoggedIn, isLoading, error, signInUser, registerUser, signOut };
 }
